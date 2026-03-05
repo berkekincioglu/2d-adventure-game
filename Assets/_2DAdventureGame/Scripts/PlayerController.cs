@@ -4,29 +4,45 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     public InputAction MoveAction;
+
+    [SerializeField] private float speed = 3.0f;
+    [SerializeField] private int maxHealth = 5;
+    public int MaxHealth => maxHealth;
+
+    private int currentHealth = 1;
+    public int CurrentHealth
+    {
+        get => currentHealth;
+    }
+
     private Rigidbody2D rb;
     private Vector2 move;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
     void Start()
     {
-        //QualitySettings.vSyncCount = 0;
-        //Application.targetFrameRate = 10;
         MoveAction.Enable();
         rb = GetComponent<Rigidbody2D>();
+        // currentHealth = maxHealth;
     }
 
-    // Update is called once per frame
     void Update()
     {
         move = MoveAction.ReadValue<Vector2>();
-        Debug.Log(move);
+        // Debug.Log(move);
     }
 
     private void FixedUpdate()
     {
-        Vector2 position = (Vector2)rb.position + 3.0f * Time.fixedDeltaTime * move;
+        Vector2 position = rb.position + speed * Time.fixedDeltaTime * move;
         rb.MovePosition(position);
+    }
+
+    public void ChangeHealth(int amount)
+    {
+        currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
+        Debug.Log(currentHealth + "/" + maxHealth);
+
     }
 
 }
