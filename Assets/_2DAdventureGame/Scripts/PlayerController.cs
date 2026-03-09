@@ -19,12 +19,6 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     private Vector2 move;
 
-    // Variables related to temporary invincibility
-    // [SerializeField] private float timeInvincible = 2.0f;
-    // bool isInvincible;
-    // float damageCooldown;
-
-
     void Start()
     {
         MoveAction.Enable();
@@ -35,9 +29,6 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         move = MoveAction.ReadValue<Vector2>();
-        // Debug.Log(move);
-
-
     }
 
     private void FixedUpdate()
@@ -48,24 +39,8 @@ public class PlayerController : MonoBehaviour
 
     public void ChangeHealth(int amount)
     {
-        if (amount < 0)
-        {
-            // if (isInvincible)
-            //     return;
-
-            // StartCoroutine(InvincibilityCoroutine());
-        }
         currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
         Debug.Log(currentHealth + "/" + maxHealth);
-
     }
-
-
-    // private IEnumerator InvincibilityCoroutine()
-    // {
-    //     isInvincible = true;
-    //     yield return new WaitForSeconds(timeInvincible);
-    //     isInvincible = false;
-    // }
 
 }
