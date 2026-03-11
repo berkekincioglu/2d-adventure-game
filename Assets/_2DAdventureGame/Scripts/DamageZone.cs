@@ -33,6 +33,7 @@ public class DamageZone : MonoBehaviour
         while (true)
         {
             player.ChangeHealth(-damagePerTick);
+            player.TriggerHitAnimation();
             yield return new WaitForSeconds(tickInterval);
         }
     }

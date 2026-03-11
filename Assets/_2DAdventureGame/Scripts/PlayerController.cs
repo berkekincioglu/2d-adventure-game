@@ -1,10 +1,10 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
     public InputAction MoveAction;
+    public InputAction LaunchAction;
 
     [SerializeField] private float speed = 3.0f;
     [SerializeField] private int maxHealth = 5;
@@ -19,16 +19,38 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     private Vector2 move;
 
+    private Animator animator;
+    private Vector2 moveDirection = new Vector2(1, 0);
+
+    [SerializeField] private GameObject projectilePrefab;
+
     void Start()
     {
         MoveAction.Enable();
+        LaunchAction.Enable();
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
         currentHealth = maxHealth;
     }
 
     void Update()
     {
         move = MoveAction.ReadValue<Vector2>();
+
+        if (!Mathf.Approximately(move.x, 0.0f) || !Mathf.Approximately(move.y, 0.0f))
+        {
+            moveDirection.Set(move.x, move.y);
+            moveDirection.Normalize();
+        }
+
+        animator.SetFloat("Look X", moveDirection.x);
+        animator.SetFloat("Look Y", moveDirection.y);
+        animator.SetFloat("Speed", move.magnitude);
+
+        if (LaunchAction.WasPressedThisFrame())
+        {
+            Launch();
+        }
     }
 
     private void FixedUpdate()
@@ -41,6 +63,19 @@ public class PlayerController : MonoBehaviour
     {
         currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
         Debug.Log(currentHealth + "/" + maxHealth);
+    }
+
+    public void TriggerHitAnimation()
+    {
+        animator.SetTrigger("Hit");
+    }
+
+    private void Launch()
+    {
+        GameObject projectile = Instantiate(projectilePrefab, rb.position + Vector2.up * 0.5f, Quaternion.identity);
+        Projectile projectileScript = projectile.GetComponent<Projectile>();
+        projectileScript.Launch(moveDirection, 300.0f);
+        animator.SetTrigger("Launch");
     }
 
 }
