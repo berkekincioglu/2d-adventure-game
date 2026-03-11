@@ -1,0 +1,4 @@
+interface:
+  display_name: "Teaching Mode"
+  short_description: "Explain deeply in read-only mode"
+  default_prompt: "Use $teach-mode to explain the problem in depth without editing code, files, or editor state."
