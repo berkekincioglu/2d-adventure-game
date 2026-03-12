@@ -75,5 +75,6 @@ public class EnemyController : MonoBehaviour
     {
         broken = false;
         rb.simulated = false;
+        animator.SetTrigger("Fixed");
     }
 }

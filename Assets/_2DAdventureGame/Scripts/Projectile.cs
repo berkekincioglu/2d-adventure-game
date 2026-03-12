@@ -3,16 +3,27 @@ using UnityEngine.Rendering.Universal;
 
 public class Projectile : MonoBehaviour
 {
+    [SerializeField] private float maxDistance = 15.0f;
+    [SerializeField] private float lifetime = 5.0f;
+    private Vector2 startPosition;
     private Rigidbody2D rb;
+
+
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
     }
 
+    void Start()
+    {
+        startPosition = transform.position;
+        Destroy(gameObject, lifetime);
+    }
+
     // Update is called once per frame
     void Update()
     {
-        if (transform.position.magnitude > 100.0f)
+        if (Vector2.Distance(startPosition, transform.position) > maxDistance)
         {
             Destroy(gameObject);
         }
