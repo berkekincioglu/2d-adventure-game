@@ -5,6 +5,7 @@ public class PlayerController : MonoBehaviour
 {
     public InputAction MoveAction;
     public InputAction LaunchAction;
+    public InputAction TalkAction;
 
     [SerializeField] private float speed = 3.0f;
     [SerializeField] private int maxHealth = 5;
@@ -28,6 +29,7 @@ public class PlayerController : MonoBehaviour
     {
         MoveAction.Enable();
         LaunchAction.Enable();
+        TalkAction.Enable();
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         currentHealth = maxHealth;
@@ -50,6 +52,12 @@ public class PlayerController : MonoBehaviour
         if (LaunchAction.WasPressedThisFrame())
         {
             Launch();
+        }
+
+        RaycastHit2D hit = Physics2D.Raycast(rb.position + Vector2.up * 0.2f, moveDirection, 1.5f, LayerMask.GetMask("NPC"));
+        if (hit.collider != null)
+        {
+            FindFriend();
         }
     }
 
@@ -77,6 +85,14 @@ public class PlayerController : MonoBehaviour
         Projectile projectileScript = projectile.GetComponent<Projectile>();
         projectileScript.Launch(moveDirection, 300.0f);
         animator.SetTrigger("Launch");
+    }
+
+    private void FindFriend()
+    {
+        if (TalkAction.WasPressedThisFrame())
+        {
+            UIHandler.instance.DisplayDialogue();
+        }
     }
 
 }
