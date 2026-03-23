@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour
     private Vector2 moveDirection = new Vector2(1, 0);
 
     [SerializeField] private GameObject projectilePrefab;
+    private NonPlayerCharacter lastNonPlayerCharacter;
 
     void Start()
     {
@@ -57,7 +58,19 @@ public class PlayerController : MonoBehaviour
         RaycastHit2D hit = Physics2D.Raycast(rb.position + Vector2.up * 0.2f, moveDirection, 1.5f, LayerMask.GetMask("NPC"));
         if (hit.collider != null)
         {
+
+            NonPlayerCharacter npc = hit.collider.GetComponent<NonPlayerCharacter>();
+            npc.dialogueBubble.SetActive(true);
+            lastNonPlayerCharacter = npc;
             FindFriend();
+        }
+        else
+        {
+            if (lastNonPlayerCharacter != null)
+            {
+                lastNonPlayerCharacter.dialogueBubble.SetActive(false);
+                lastNonPlayerCharacter = null;
+            }
         }
     }
 
