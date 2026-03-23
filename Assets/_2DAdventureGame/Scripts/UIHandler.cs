@@ -10,6 +10,10 @@ public class UIHandler : MonoBehaviour
     private VisualElement m_NonPlayerDialogue;
     private float m_TimerDisplay;
 
+    private VisualElement m_WinScreen;
+    private VisualElement m_LoseScreen;
+
+
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -30,6 +34,9 @@ public class UIHandler : MonoBehaviour
         m_NonPlayerDialogue = uiDocument.rootVisualElement.Q<VisualElement>("NPCDialogue");
         m_NonPlayerDialogue.style.display = DisplayStyle.None;
         m_TimerDisplay = -1f;
+
+        m_WinScreen = uiDocument.rootVisualElement.Q<VisualElement>("WinScreenContainer");
+        m_LoseScreen = uiDocument.rootVisualElement.Q<VisualElement>("LoseScreenContainer");
     }
 
     void Update()
@@ -53,5 +60,15 @@ public class UIHandler : MonoBehaviour
     public void UpdateHealthBar(float healthPercentage)
     {
         m_HealthBar.style.width = Length.Percent(100 * healthPercentage);
+    }
+
+    public void DisplayWinScreen()
+    {
+        m_WinScreen.style.opacity = 1.0f;
+    }
+
+    public void DisplayLoseScreen()
+    {
+        m_LoseScreen.style.opacity = 1.0f;
     }
 }

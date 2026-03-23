@@ -1,4 +1,5 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:Template name="EndScreen" src="project://database/Assets/EndScreen.uxml?fileID=9197481963319205126&amp;guid=0f437b561bf1d420588ed885627bab81&amp;type=3#EndScreen"/>
     <ui:Template name="NPCDialogue" src="project://database/Assets/NPCDialogue.uxml?fileID=9197481963319205126&amp;guid=f1ffb9667730d42889cdb300e5f16410&amp;type=3#NPCDialogue"/>
     <ui:VisualElement name="HealthBarBackground" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/_2DAdventureGame/Art/Ruby/UI/UIHealthFrame.png?fileID=21300000&amp;guid=e04807cd45105ec409b00463fe6ab7b1&amp;type=3#UIHealthFrame&quot;); width: 515px; height: 301px; -unity-background-scale-mode: scale-to-fit;">
         <ui:VisualElement name="HealthBarContainer" style="flex-grow: 1; position: absolute; height: 87px; width: 284px; top: 98px; left: 212px;">
@@ -7,4 +8,5 @@
         <ui:VisualElement name="CharacterPortrait" style="flex-grow: 1; background-image: url(&quot;project://database/Assets/_2DAdventureGame/Tutorial_Demo/Demo_Art/Ruby/UI/CharacterPortrait.png?fileID=21300000&amp;guid=ec73128b64458a947a9603ad250e5956&amp;type=3#CharacterPortrait&quot;); -unity-background-scale-mode: scale-to-fit; position: absolute; height: 171px; top: 58px; width: 233px; left: 0;"/>
     </ui:VisualElement>
     <ui:Instance template="NPCDialogue" name="NPCDialogue" style="position: absolute; top: 70%; right: 10%; left: 10%; bottom: 0%;"/>
+    <ui:Instance template="EndScreen" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0;"/>
 </ui:UXML>
