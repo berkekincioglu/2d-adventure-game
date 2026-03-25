@@ -26,6 +26,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject projectilePrefab;
     private NonPlayerCharacter lastNonPlayerCharacter;
 
+    private AudioSource audioSource;
+    [SerializeField] private AudioClip hitClip;
+
     void Start()
     {
         MoveAction.Enable();
@@ -34,6 +37,7 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         currentHealth = maxHealth;
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -84,12 +88,20 @@ public class PlayerController : MonoBehaviour
     {
         currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
         UIHandler.instance.UpdateHealthBar((float)currentHealth / maxHealth);
-        Debug.Log(currentHealth + "/" + maxHealth);
+        if (amount < 0)
+        {
+            PlaySound(hitClip);
+        }
     }
 
     public void TriggerHitAnimation()
     {
         animator.SetTrigger("Hit");
+    }
+
+    public void PlaySound(AudioClip clip)
+    {
+        audioSource.PlayOneShot(clip);
     }
 
     private void Launch()
