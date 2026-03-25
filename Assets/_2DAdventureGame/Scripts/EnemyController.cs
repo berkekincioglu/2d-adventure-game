@@ -13,6 +13,7 @@ public class EnemyController : MonoBehaviour
     private bool broken = true;
 
     private Animator animator;
+    private AudioSource audioSource;
 
     public bool isBroken { get => broken; }
 
@@ -22,6 +23,7 @@ public class EnemyController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         timer = changeTime;
         animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
         HandleRandomizeVertical();
     }
 
@@ -78,5 +80,6 @@ public class EnemyController : MonoBehaviour
         broken = false;
         rb.simulated = false;
         animator.SetTrigger("Fixed");
+        audioSource.Stop();
     }
 }
