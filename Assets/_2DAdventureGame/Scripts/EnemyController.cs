@@ -16,6 +16,7 @@ public class EnemyController : MonoBehaviour
     private AudioSource audioSource;
 
     public bool isBroken { get => broken; }
+    public ParticleSystem smokeParticleEffect;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -81,5 +82,6 @@ public class EnemyController : MonoBehaviour
         rb.simulated = false;
         animator.SetTrigger("Fixed");
         audioSource.Stop();
+        smokeParticleEffect.Stop();
     }
 }
