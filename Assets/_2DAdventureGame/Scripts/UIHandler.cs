@@ -13,6 +13,10 @@ public class UIHandler : MonoBehaviour
     private VisualElement m_WinScreen;
     private VisualElement m_LoseScreen;
 
+    private Label m_RobotCounter;
+
+    private PlayerController player;
+
 
     private void Awake()
     {
@@ -22,21 +26,27 @@ public class UIHandler : MonoBehaviour
             return;
         }
         instance = this;
+        UIDocument uiDocument = GetComponent<UIDocument>();
+        m_HealthBar = uiDocument.rootVisualElement.Q<VisualElement>("HealthBar");
+
+        m_NonPlayerDialogue = uiDocument.rootVisualElement.Q<VisualElement>("NPCDialogue");
+        m_WinScreen = uiDocument.rootVisualElement.Q<VisualElement>("WinScreenContainer");
+        m_LoseScreen = uiDocument.rootVisualElement.Q<VisualElement>("LoseScreenContainer");
+
+        m_RobotCounter = uiDocument.rootVisualElement.Q<Label>("CounterLabel");
+
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        UIDocument uiDocument = GetComponent<UIDocument>();
-        m_HealthBar = uiDocument.rootVisualElement.Q<VisualElement>("HealthBar");
         UpdateHealthBar(1f);
-
-        m_NonPlayerDialogue = uiDocument.rootVisualElement.Q<VisualElement>("NPCDialogue");
         m_NonPlayerDialogue.style.display = DisplayStyle.None;
         m_TimerDisplay = -1f;
 
-        m_WinScreen = uiDocument.rootVisualElement.Q<VisualElement>("WinScreenContainer");
-        m_LoseScreen = uiDocument.rootVisualElement.Q<VisualElement>("LoseScreenContainer");
+        player = FindAnyObjectByType<PlayerController>();
+        player.OnTalkedToNPC += DisplayDialogue;
+        player.OnHealthChanged += UpdateHealthBar;
     }
 
     void Update()
@@ -49,6 +59,13 @@ public class UIHandler : MonoBehaviour
                 m_NonPlayerDialogue.style.display = DisplayStyle.None;
             }
         }
+    }
+
+    void OnDestroy()
+    {
+        player.OnTalkedToNPC -= DisplayDialogue;
+        player.OnHealthChanged -= UpdateHealthBar;
+
     }
 
     public void DisplayDialogue()
@@ -71,4 +88,10 @@ public class UIHandler : MonoBehaviour
     {
         m_LoseScreen.style.opacity = 1.0f;
     }
+
+    public void SetCounter(int current, int enemies)
+    {
+        m_RobotCounter.text = $"{current} / {enemies}";
+    }
+
 }

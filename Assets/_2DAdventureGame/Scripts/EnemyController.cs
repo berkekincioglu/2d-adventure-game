@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+
 
 public class EnemyController : MonoBehaviour
 {
@@ -17,6 +19,8 @@ public class EnemyController : MonoBehaviour
 
     public bool isBroken { get => broken; }
     public ParticleSystem smokeParticleEffect;
+
+    public event Action OnFixed;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -73,7 +77,7 @@ public class EnemyController : MonoBehaviour
 
     private void HandleRandomizeVertical()
     {
-        vertical = Random.value > 0.5f;
+        vertical = UnityEngine.Random.value > 0.5f;
     }
 
     public void Fix()
@@ -83,5 +87,6 @@ public class EnemyController : MonoBehaviour
         animator.SetTrigger("Fixed");
         audioSource.Stop();
         smokeParticleEffect.Stop();
+        OnFixed?.Invoke();
     }
 }

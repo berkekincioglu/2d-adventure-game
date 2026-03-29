@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -16,6 +17,8 @@ public class PlayerController : MonoBehaviour
     {
         get => currentHealth;
     }
+    public event Action OnTalkedToNPC;
+    public event Action<float> OnHealthChanged;
 
     private Rigidbody2D rb;
     private Vector2 move;
@@ -87,7 +90,8 @@ public class PlayerController : MonoBehaviour
     public void ChangeHealth(int amount)
     {
         currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
-        UIHandler.instance.UpdateHealthBar((float)currentHealth / maxHealth);
+        // UIHandler.instance.UpdateHealthBar((float)currentHealth / maxHealth);
+        OnHealthChanged?.Invoke((float)currentHealth / maxHealth);
         if (amount < 0)
         {
             PlaySound(hitClip);
@@ -116,7 +120,7 @@ public class PlayerController : MonoBehaviour
     {
         if (TalkAction.WasPressedThisFrame())
         {
-            UIHandler.instance.DisplayDialogue();
+            OnTalkedToNPC?.Invoke();
         }
     }
 
